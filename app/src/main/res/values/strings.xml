@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Animations</string>
+  <string name="app_name">Android Animations</string>
   <string name="rotate">Rotate</string>
   <string name="translate">Translate</string>
   <string name="scale">Scale</string>
@@ -7,4 +7,5 @@
   <string name="play_from_xml">Play from XML</string>
   <string name="play_from_code">Play from Code</string>
   <string name="use_viewpropertyanimator">Use ViewPropertyAnimator</string>
+  <string name="start_stop_animation">Start/Stop Animation</string>
 </resources>

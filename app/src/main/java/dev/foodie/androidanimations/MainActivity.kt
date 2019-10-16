@@ -1,6 +1,7 @@
 package dev.foodie.androidanimations
 
 import android.animation.*
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -17,6 +18,10 @@ class MainActivity : AppCompatActivity(), Animator.AnimatorListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        nextActivityIcon.setOnClickListener {
+            startActivity(Intent(applicationContext, FrameActivity::class.java))
+        }
     }
 
     fun fade(view: View) {
