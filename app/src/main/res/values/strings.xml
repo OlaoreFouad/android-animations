@@ -4,4 +4,7 @@
   <string name="translate">Translate</string>
   <string name="scale">Scale</string>
   <string name="fade">Fade</string>
+  <string name="play_from_xml">Play from XML</string>
+  <string name="play_from_code">Play from Code</string>
+  <string name="use_viewpropertyanimator">Use ViewPropertyAnimator</string>
 </resources>

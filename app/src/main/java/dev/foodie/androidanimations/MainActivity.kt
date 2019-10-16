@@ -1,7 +1,6 @@
 package dev.foodie.androidanimations
 
-import android.animation.Animator
-import android.animation.AnimatorInflater
+import android.animation.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,10 +9,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), Animator.AnimatorListener {
 
-    private var fadeAnimator: Animator? = null
-    private var rotateAnimator: Animator? = null
-    private var translateAnimator: Animator? = null
-    private var scaleAnimator: Animator? = null
+    private var fadeAnimator: ObjectAnimator? = null
+    private var rotateAnimator: ObjectAnimator? = null
+    private var translateAnimator: ObjectAnimator? = null
+    private var scaleAnimator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,37 +20,44 @@ class MainActivity : AppCompatActivity(), Animator.AnimatorListener {
     }
 
     fun fade(view: View) {
-        fadeAnimator = AnimatorInflater.loadAnimator(this, R.animator.fade)
+        fadeAnimator = ObjectAnimator.ofFloat(target_image, "alpha", 0f, 1f)
         fadeAnimator?.apply {
-            setTarget(target_image)
             addListener(this@MainActivity)
+            duration = 1500
+            repeatMode = ValueAnimator.REVERSE
             start()
         }
     }
 
     fun scale(view: View) {
-        scaleAnimator = AnimatorInflater.loadAnimator(this, R.animator.scale)
+        scaleAnimator = ObjectAnimator.ofFloat(target_image, "scaleX", 1.0f, 2.0f)
         scaleAnimator?.apply {
-            setTarget(target_image)
+            duration = 1500
+            repeatCount = 1
+            repeatMode = ValueAnimator.REVERSE
             addListener(this@MainActivity)
             start()
         }
     }
 
     fun translate(view: View) {
-        translateAnimator = AnimatorInflater.loadAnimator(this, R.animator.translate)
+        translateAnimator = ObjectAnimator.ofInt(target_image, "translationX", 0, 200)
         translateAnimator?.apply {
-            setTarget(target_image)
+            duration = 1500
+            repeatCount = 1
+            repeatMode = ValueAnimator.REVERSE
             addListener(this@MainActivity)
             start()
         }
     }
 
     fun rotate(view: View) {
-        rotateAnimator = AnimatorInflater.loadAnimator(this, R.animator.rotate)
+        rotateAnimator = ObjectAnimator.ofFloat(target_image, "rotation", 0f, 180f)
         rotateAnimator?.apply {
-            setTarget(target_image)
             addListener(this@MainActivity)
+            duration = 1500
+            repeatCount = 1
+            repeatMode = ValueAnimator.REVERSE
             start()
         }
     }
@@ -70,6 +76,60 @@ class MainActivity : AppCompatActivity(), Animator.AnimatorListener {
 
     override fun onAnimationStart(p0: Animator?) {
         Toast.makeText(this, "Animation started!", Toast.LENGTH_SHORT).show()
+    }
+
+    fun playFromXML(view: View) {
+        val setAnimator = AnimatorInflater.loadAnimator(this, R.animator.set)
+        setAnimator.apply {
+            setTarget(target_image)
+            start()
+        }
+    }
+
+    fun playFromCode(view: View) {
+
+        // Root set of the animator - it contains all other animations...
+        val rootSet = AnimatorSet()
+
+        val rotationAnimator = ObjectAnimator.ofFloat(
+                target_image, "rotationY", 0f, 360f
+        )
+        rotationAnimator.apply {
+            duration = 500
+        }
+
+        // The child animator set that contains two scale object animations
+        val childSet = AnimatorSet()
+
+        val scaleXAnimator = ObjectAnimator.ofFloat(
+                target_image, "scaleX", 1.5f, 1.0f
+        )
+
+        scaleXAnimator.apply { duration = 500 }
+
+        val scaleYAnimator = ObjectAnimator.ofFloat(
+                target_image, "scaleY", 1.5f, 1.0f
+        )
+
+        scaleYAnimator.apply { duration = 500 }
+        childSet.playTogether(scaleXAnimator, scaleYAnimator)
+
+        rootSet.play(rotationAnimator).before(childSet).after(3000)
+        rootSet.start()
+
+    }
+
+    fun viewPropertyAnimator(view: View) {
+        val vpa = target_image.animate()
+
+        vpa.apply {
+            duration = 1000
+            rotationX(360f)
+            scaleX(1.5f)
+            translationX(200f)
+            scaleY(1.6f)
+            start()
+        }
     }
 
 }
